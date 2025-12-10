@@ -1,4 +1,4 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://34.55.80.46';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://binate-denny-astable.ngrok-free.dev';
 
 export const APP_CONFIG = {
   maxQuestions: 10,
