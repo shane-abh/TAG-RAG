@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Message as MessageType, QueryOptimization as QueryOptimizationType } from '../types';
+import type { Message as MessageType, QueryOptimization as QueryOptimizationType } from '../types';
 import Message from './Message';
 import QueryOptimization from './QueryOptimization';
 import StatusMessage from './StatusMessage';

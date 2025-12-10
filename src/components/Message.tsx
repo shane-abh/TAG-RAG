@@ -1,4 +1,4 @@
-import { Message as MessageType } from '../types';
+import type { Message as MessageType } from '../types';
 import QueryOptimization from './QueryOptimization';
 import Sources from './Sources';
 import ReactMarkdown from 'react-markdown';

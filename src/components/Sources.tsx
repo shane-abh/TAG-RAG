@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Source } from '../types';
+import type { Source } from '../types';
 
 interface SourcesProps {
   sources: Source[];

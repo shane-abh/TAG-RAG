@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { QueryOptimization as QueryOptimizationType } from '../types';
+import type { QueryOptimization as QueryOptimizationType } from '../types';
 
 interface QueryOptimizationProps {
   optimization: QueryOptimizationType;
