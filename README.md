@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# Budget 2025 Navigator 🍁
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An intelligent chat application that helps users explore and understand Canada's Budget 2025. Users can ask questions about government policies, tax changes, investments, and economic projections, and receive detailed, source-backed answers in real-time.
 
-Currently, two official plugins are available:
+## What This Project Does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a **chat-based web application** that makes complex government budget information easy to understand. Think of it like a smart assistant that can answer questions about Canada's fiscal policies by searching through official documents and providing clear explanations.
 
-## React Compiler
+### Key Features
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **Interactive Chat Interface**: Users can have natural conversations about budget topics
+- **Real-time Responses**: Answers stream in as they're generated, providing immediate feedback
+- **Source Citations**: Every answer includes references to the original government documents
+- **User Authentication**: Secure registration and login system
+- **Query Optimization**: The system automatically improves user questions to find better answers
+- **Usage Tracking**: Visual indicators show how many questions remain in a session
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This project demonstrates skills in modern web development:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React 19** - Building interactive user interfaces
+- **TypeScript** - Writing reliable, type-safe code
+- **Vite** - Fast development and build tooling
+- **Real-time Communication** - Server-sent events for live updates
+- **Component Architecture** - Organized, reusable code structure
+- **Custom Hooks** - Reusable logic for authentication and state management
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Requirements
+
+- Node.js (version 18 or newer)
+- npm (comes with Node.js)
+
+### Installation
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open your browser to the URL shown in the terminal (usually `http://localhost:5173`)
+
+### Building for Production
+
+To create an optimized version for deployment:
+
+```bash
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `src/components/` - Reusable UI components (chat interface, header, forms)
+- `src/services/` - Code that communicates with the backend API
+- `src/hooks/` - Custom React hooks for shared functionality
+- `src/utils/` - Helper functions for validation and formatting
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## What This Demonstrates
+
+This project showcases:
+- Building modern, responsive web applications
+- Implementing real-time features
+- Creating intuitive user experiences
+- Writing maintainable, well-structured code
+- Working with APIs and authentication
+- TypeScript for code reliability

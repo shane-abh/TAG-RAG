@@ -735,6 +735,34 @@
   border-top: 1px solid var(--blueprint-lines);
 }
 
+.input-error {
+  margin-bottom: 12px;
+  padding: 10px 16px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  border-radius: var(--radius-sm);
+  color: #ff6b6b;
+  font-size: 13px;
+  font-weight: 500;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#messageInput[aria-invalid="true"] {
+  border-color: rgba(220, 38, 38, 0.6);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
 .input-container {
   display: flex;
   gap: 14px;

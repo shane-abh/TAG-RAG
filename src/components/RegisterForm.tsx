@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './RegisterForm.css';
+import { validateNameInput, sanitizeInput } from '../utils/inputValidation';
 
 interface RegisterFormProps {
   onRegister: (name: string) => Promise<void>;
@@ -9,14 +10,46 @@ interface RegisterFormProps {
 function RegisterForm({ onRegister, error }: RegisterFormProps) {
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+
+  // Validate input on change
+  useEffect(() => {
+    if (name.trim() && hasAttemptedSubmit) {
+      const validation = validateNameInput(name);
+      if (!validation.isValid) {
+        setValidationError(validation.error || 'Invalid name');
+      } else {
+        setValidationError(null);
+      }
+    } else {
+      setValidationError(null);
+    }
+  }, [name, hasAttemptedSubmit]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Sanitize input in real-time to prevent malicious content
+    const sanitized = sanitizeInput(value);
+    setName(sanitized);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    setHasAttemptedSubmit(true);
     
+    const validation = validateNameInput(name);
+    if (!validation.isValid) {
+      setValidationError(validation.error || 'Invalid name');
+      return;
+    }
+    
+    if (!validation.sanitized) return;
+    
+    setValidationError(null);
     setIsSubmitting(true);
     try {
-      await onRegister(name.trim());
+      await onRegister(validation.sanitized);
     } finally {
       setIsSubmitting(false);
     }
@@ -32,8 +65,9 @@ function RegisterForm({ onRegister, error }: RegisterFormProps) {
         <div className="access-badge">Secure Connection</div>
       </div>
 
-      {/* Error Message */}
+      {/* Error Messages */}
       {error && <div className="register-error">{error}</div>}
+      {validationError && <div className="register-error">{validationError}</div>}
 
       {/* Registration Form */}
       <form className="register-form" onSubmit={handleSubmit}>
@@ -45,14 +79,16 @@ function RegisterForm({ onRegister, error }: RegisterFormProps) {
             placeholder="Enter your name"
             autoComplete="off"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleChange}
             disabled={isSubmitting}
             required
+            aria-invalid={validationError ? 'true' : 'false'}
+            aria-describedby={validationError ? 'name-error' : undefined}
           />
         </div>
         <button 
           type="submit" 
-          disabled={isSubmitting || !name.trim()}
+          disabled={isSubmitting || !name.trim() || !!validationError}
           className={isSubmitting ? 'loading' : ''}
         >
           {isSubmitting ? 'Initializing' : 'Enter System'}

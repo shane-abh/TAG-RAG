@@ -4,6 +4,7 @@ import type { Message, QueryOptimization, Source } from './types'
 import { Header, ChatArea, InputArea, RegisterForm, LimitWarning } from './components'
 import { useAuth } from './hooks/useAuth'
 import { API_BASE_URL } from './config'
+import { validateChatInput } from './utils/inputValidation'
 
 // Create welcome message with user name
 const createWelcomeMessage = (name?: string): Message => ({
@@ -66,21 +67,29 @@ function App() {
     const message = inputValue.trim();
     if (!message || !auth.isAuthenticated) return;
 
+    // Validate input before sending (additional safety check)
+    const validation = validateChatInput(message);
+    if (!validation.isValid || !validation.sanitized) {
+      return; // Validation error should already be shown in InputArea
+    }
+
+    const sanitizedMessage = validation.sanitized;
+
     // Check if questions remaining
     if (auth.questionsRemaining !== null && auth.questionsRemaining <= 0) {
       return;
     }
 
-    // Add user message
-    setMessages(prev => [...prev, { content: message, isUser: true }]);
+    // Add user message (use sanitized version)
+    setMessages(prev => [...prev, { content: sanitizedMessage, isUser: true }]);
     setInputValue('');
     setIsLoading(true);
-    setCurrentOptimization({ original: message });
+    setCurrentOptimization({ original: sanitizedMessage });
     setCurrentAnswer('');
 
     try {
-      // Build URL with token for EventSource fallback
-      let url = `${API_BASE_URL}/chat/stream?message=${encodeURIComponent(message)}&use_query_expansion=true`;
+      // Build URL with token for EventSource fallback (use sanitized message)
+      let url = `${API_BASE_URL}/chat/stream?message=${encodeURIComponent(sanitizedMessage)}&use_query_expansion=true`;
       if (auth.authToken) {
         url += `&token=${encodeURIComponent(auth.authToken)}`;
       }
@@ -88,7 +97,7 @@ function App() {
       const eventSource = new EventSource(url, { withCredentials: true });
       eventSourceRef.current = eventSource;
 
-      const optimizationData: QueryOptimization = { original: message };
+      const optimizationData: QueryOptimization = { original: sanitizedMessage };
       let sourcesData: Source[] = [];
       let totalDocsCount = 0;
       let answerText = '';
@@ -206,13 +215,6 @@ function App() {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  };
-
   // Show loading while checking auth
   if (isCheckingAuth) {
     return (
@@ -258,7 +260,6 @@ function App() {
         isLoading={isLoading || showLimitWarning}
         onInputChange={setInputValue}
         onSendMessage={sendMessage}
-        onKeyPress={handleKeyPress}
       />
     </div>
   );
